@@ -1,0 +1,25 @@
+&                         (вставляет родительский класс)
+
+
+>                         (элемент первого вложения)
+
+
+$fz:80px;                  $fz-переменная)
+
+
+@import "FILE";
+
+
+%tplborder{                (шаблон % или .)
+    border: solid 5px red;
+}
+@extend %tplborder;
+
+
+@mixin fonts($f){           (миксин)
+    font-size: $f;
+}
+@include fonts(100px);
+
+
+//комментарий в SASS

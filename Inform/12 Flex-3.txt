@@ -1,0 +1,4 @@
+flex-direction: row
+	      row-revers
+	      column
+	      column-rever

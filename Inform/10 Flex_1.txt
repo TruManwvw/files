@@ -1,0 +1,27 @@
+display: flex;
+display: inline-flex;
+
+'''
+(Родителю Flex-контейнера)  text-align: center;
+
+'''
+(По оси Х) justify-conten: flex-start;
+	   justify-conten: flex-end;
+	   justify-conten: center;
+
+	   justify-conten: space-between;
+	   justify-conten: space-around;
+
+(По оси Y) align-items: stretch;
+	   align-items: flex-start;
+	   align-items: flex-end;
+	   align-items: center;
+
+	   align-items: baseline;
+'''
+flex-wrap: nowrap;
+flex-wrap: wrap;
+flex-wrap: wrap-revers;
+
+
+			    

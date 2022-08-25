@@ -1,0 +1,10 @@
+(Для Flex-элемента) align-self: flex-start;
+		    align-self: flex-end;
+		    align-self: center;
+		    
+(Порядок) order: 1/2/3/...
+
+(Размер) flex-basis: auto/px/%
+       (увеличиваться во всю ширину) flex-grow: 1/0
+       (Уменьшаться) flex-shrink: 1/0
+КОРОТКО: flex: grow shrink basis;

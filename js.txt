@@ -1,0 +1,379 @@
+ "use strict"
+
+// Определяет устройство ПК/мобаил
+const isMobile = {
+	Android: function () {
+		return navigator.userAgent.match(/Android/i);
+	},
+	BlackBerry: function () {
+		return navigator.userAgent.match(/BlackBerry/i);
+	},
+	IOS: function () {
+		return navigator.userAgent.match(/iphone|iPad|iPod/i);
+	},
+	Opera: function () {
+		return navigator.userAgent.match(/Opera Mini/i);
+	},
+	Windows: function () {
+		return navigator.userAgent.match(/IEMobile/i);
+	},
+	any: function () {
+		return (
+			isMobile.Android() ||
+			isMobile.BlackBerry() ||
+			isMobile.IOS() ||
+			isMobile.Opera() ||
+			isMobile.Windows());
+	}
+};
+
+
+
+//Бургер
+const iconMenu = document.querySelector('.menu-burger')
+if (iconMenu) {
+	const menuBody = document.querySelector('.header_nav');
+	iconMenu.addEventListener('click', function (e) {
+		document.body.classList.toggle('_lock')
+		iconMenu.classList.toggle('_active');
+		menuBody.classList.toggle('_active');
+	})
+}
+
+
+
+
+
+
+
+
+
+
+
+//Свайпер
+new Swiper('.swiper_pin', {
+	spaceBetween: 100,
+	pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	},
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Прокрутка при клике (в ссылке a стоит ID)
+const anchors = document.querySelectorAll('a[href*="#"]')
+
+for (let anchor of anchors) {
+	anchor.addEventListener('click', function(even) {
+		even.preventDefault();
+		const blockID = anchor.getAttribute('href')
+		document.querySelector('' + blockID).scrollIntoView({
+			behavior: "smooth",
+			block: "start"
+		})
+	})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Добавляет класс к body
+if (isMobile.any()) {
+	document.body.classList.add('_touch');
+	//навешивает класс(_active) для родителя .arrow
+	let menuArrows = document.querySelectorAll('.info');
+	if (menuArrows.length > 0) {
+		for (let index = 0; index < menuArrows.length; index++) {
+			const menuArrow = menuArrows[index];
+			menuArrow.addEventListener("click", function (e) {
+				menuArrow.parentElement.classList.toggle('_active');
+			});
+		}
+	}
+} else {
+	document.body.classList.add('_pc');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Маска номера телефона (в inpute type="tel" data-tel-input)
+document.addEventListener("DOMContentLoaded", function () {
+    var phoneInputs = document.querySelectorAll('input[data-tel-input]');
+
+    var getInputNumbersValue = function (input) {
+        // Return stripped input value — just numbers
+        return input.value.replace(/\D/g, '');
+    }
+
+    var onPhonePaste = function (e) {
+        var input = e.target,
+            inputNumbersValue = getInputNumbersValue(input);
+        var pasted = e.clipboardData || window.clipboardData;
+        if (pasted) {
+            var pastedText = pasted.getData('Text');
+            if (/\D/g.test(pastedText)) {
+                // Attempt to paste non-numeric symbol — remove all non-numeric symbols,
+                // formatting will be in onPhoneInput handler
+                input.value = inputNumbersValue;
+                return;
+            }
+        }
+    }
+
+    var onPhoneInput = function (e) {
+        var input = e.target,
+            inputNumbersValue = getInputNumbersValue(input),
+            selectionStart = input.selectionStart,
+            formattedInputValue = "";
+
+        if (!inputNumbersValue) {
+            return input.value = "";
+        }
+
+        if (input.value.length != selectionStart) {
+            // Editing in the middle of input, not last symbol
+            if (e.data && /\D/g.test(e.data)) {
+                // Attempt to input non-numeric symbol
+                input.value = inputNumbersValue;
+            }
+            return;
+        }
+
+        if (["7", "8", "9"].indexOf(inputNumbersValue[0]) > -1) {
+            if (inputNumbersValue[0] == "9") inputNumbersValue = "7" + inputNumbersValue;
+            var firstSymbols = (inputNumbersValue[0] == "8") ? "8" : "+7";
+            formattedInputValue = input.value = firstSymbols + " ";
+            if (inputNumbersValue.length > 1) {
+                formattedInputValue += '(' + inputNumbersValue.substring(1, 4);
+            }
+            if (inputNumbersValue.length >= 5) {
+                formattedInputValue += ') ' + inputNumbersValue.substring(4, 7);
+            }
+            if (inputNumbersValue.length >= 8) {
+                formattedInputValue += '-' + inputNumbersValue.substring(7, 9);
+            }
+            if (inputNumbersValue.length >= 10) {
+                formattedInputValue += '-' + inputNumbersValue.substring(9, 11);
+            }
+        } else {
+            formattedInputValue = '+' + inputNumbersValue.substring(0, 16);
+        }
+        input.value = formattedInputValue;
+    }
+    var onPhoneKeyDown = function (e) {
+        // Clear input after remove last symbol
+        var inputValue = e.target.value.replace(/\D/g, '');
+        if (e.keyCode == 8 && inputValue.length == 1) {
+            e.target.value = "";
+        }
+    }
+    for (var phoneInput of phoneInputs) {
+        phoneInput.addEventListener('keydown', onPhoneKeyDown);
+        phoneInput.addEventListener('input', onPhoneInput, false);
+        phoneInput.addEventListener('paste', onPhonePaste, false);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////
+//Живой поиск на странице
+document.querySelector('#elastic').oninput = function () {
+	let val = this.value.trim();
+	let elasticItems = document.querySelectorAll('.search_list li');
+	if (val != '') {
+		const ulR = document.querySelector('.search_ul_list');
+		ulR.classList.remove('none');
+		elasticItems.forEach(function (elem) {
+			if (elem.innerText.search(val) == -1) {
+				elem.classList.add('hide');
+			}
+			else {
+				elem.classList.remove('hide');
+			}
+		});
+	}
+	else {
+		const ulA = document.querySelector('.search_ul_list');
+		ulA.classList.add('none');
+		elasticItems.forEach(function (elem) {
+			elem.classList.remove('hide');
+		});
+	};
+};
+
+const focusUl = document.querySelector('.search_list');
+const focusI = document.querySelector('input.search');
+focusI.addEventListener("focus", function (e) {
+	focusUl.classList.remove('focus_none');
+});
+focusI.addEventListener("blur", function (e) {
+	setTimeout(() => { focusUl.classList.add('focus_none'); }, 300);
+	document.getElementById('elastic').value = '';
+});
+
+
+
+//////////////////////////HTML//////////
+
+<div class="search_input">
+	<input type="text" placeholder="Search" class='search' id='elastic'>
+</div>
+<div class="search_ul_list none">
+	<ul class='search_list ul'>
+		<li><a href="#bromo">Bromo</a></li>
+		<li><a href="#culture">Indonesian culture</a></li>
+		<li><a href="#get">Get started</a></li>
+	</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////Активация кнопки///////////////////
+const navLink = document.querySelectorAll(".nav_link");
+for (let i = 0; i < navLink.length; i++) {
+	navLink[i].addEventListener("click", function () {
+		navLink.forEach(el=> el.classList.remove("_active"))
+		navLink[i].classList.add("_active");
+	});
+}
+
+
+
+
+
+
+
+
+
+
+//Добавление кнопке класса active и его элементу
+const tabsBtn   = document.querySelectorAll(".nav_link");
+const tabsItems = document.querySelectorAll(".content");
+
+tabsBtn.forEach(onTabClick);
+
+function onTabClick(item) {
+	item.addEventListener("click", function() {
+		let currentBtn = item;
+		let tabId = currentBtn.getAttribute("data-tab");
+		let currentTab = document.querySelector(tabId);
+
+		if( ! currentBtn.classList.contains('_active') ) {
+		   tabsBtn.forEach(function(item) {
+		         item.classList.remove('_active');
+		      });
+		    
+		      tabsItems.forEach(function(item) {
+		         item.classList.remove('_active');
+		      });
+		    
+		      currentBtn.classList.add('_active');
+		      currentTab.classList.add('_active');
+		  }
+	}
+}
